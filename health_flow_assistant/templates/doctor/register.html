@@ -1,0 +1,130 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Health Flow Assistant{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap-icons/bootstrap-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'boxicons/css/boxicons.min.css' %}">
+    <link rel="stylesheet" href="{% static 'glightbox/css/glightbox.min.css' %}">
+    <link rel="stylesheet" href="{% static 'remixicon/remixicon.css' %}">
+    <link rel="stylesheet" href="{% static 'fontawesome-free/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 56px; 
+            margin-bottom: 80px; 
+        }
+
+        main {
+            padding: 60px 0;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #f8f9fa;
+            padding: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- ======= Top Bar ======= -->
+    <div id="topbar" class="d-flex align-items-center fixed-top">
+        <div class="container d-flex justify-content-between">
+          <div class="contact-info d-flex align-items-center">
+            <i class="bi bi-envelope"></i> <a href="mailto:contact@example.com">kamilskylark@gmail.com</a>
+            <i class="bi bi-phone"></i> +48 601 491 504
+          </div>
+          <div class="d-none d-lg-flex social-links align-items-center">
+            <a href="https://www.facebook.com/kamil.skowronek2" class="facebook"><i class="bi bi-facebook"></i></a>
+            <a href="https://www.linkedin.com/in/kamil-skowronek-910204185/" class="linkedin"><i class="bi bi-linkedin"></i></a>
+            <a href="https://github.com/Kamaell11" class="github"><i class="bi bi-github"></i></a>
+          </div>
+        </div>
+      </div>
+
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top">
+        <div class="container d-flex align-items-center">
+    
+            <h1 class="logo me-auto"><a href="{% url 'clinic:home' %}">Health Flow Assistant</a></h1>    
+            <nav id="navbar" class="navbar order-last order-lg-0">
+                <ul>
+
+                    <li><a class="nav-link scrollto" href="#departments">Departments</a></li>
+                    <li><a class="nav-link scrollto" href="#doctors">Doctors</a></li>
+                    {% if user.is_authenticated %}
+                    <li><a class="nav-link scrollto" href="{% url 'clinic:logout' %}">Logout</a></li>
+                    {% else %}
+                        <li class="dropdown"><a href="#"><span>Login</span> <i class="bi bi-chevron-down"></i></a>
+                            <ul>
+                                <li><a href="{% url 'patient:patient_login' %}">Patient</a></li>
+                                <li><a href="{% url 'doctor:doctor_login' %}">Doctor</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown"><a href="#"><span>Register</span> <i class="bi bi-chevron-down"></i></a>
+                            <ul>
+                                <li><a href="{% url 'patient:patient_register' %}">Patient</a></li>
+                                <li><a href="{% url 'doctor:doctor_register' %}">Doctor</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                    <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+                </ul>
+                <i class="bi bi-list mobile-nav-toggle"></i>
+            </nav><!-- .navbar -->
+    
+            <a href="#appointment" class="appointment-btn scrollto"><span class="d-none d-md-inline">Make an</span> Appointment</a>
+    
+        </div>
+    </header>
+    
+    <main id="main">
+        <div class="container">
+            <h2>Doctor Registration</h2>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ user_form.as_p }}
+                {{ doctor_form.as_p }}
+                <button type="submit">Register</button>
+            </form>
+        </div>
+    </main>
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer">
+
+        
+    
+        <div class="container d-md-flex py-4">
+    
+          <div class="me-md-auto text-center text-md-start">
+            <div class="copyright">
+              © Copyright <strong><span>Health Flow Assistant</span></strong>. Fell free to use
+            </div>
+            <div class="credits">
+              <!-- All the links in the footer should remain intact. -->
+              <!-- You can delete the links only if you purchased the pro version. -->
+              <!-- Licensing information: https://bootstrapmade.com/license/ -->
+              <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/medilab-free-medical-bootstrap-theme/ -->
+              Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+            </div>
+          </div>
+          <div class="social-links text-center text-md-right pt-3 pt-md-0">
+
+            <a href="https://www.facebook.com/kamil.skowronek2" class="facebook"><i class="bx bxl-facebook"></i></a>
+            <a href="https://www.linkedin.com/in/kamil-skowronek-910204185/" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+            <a href="https://github.com/Kamaell11" class="github"><i class="bx bxl-github"></i></a>
+          </div>
+        </div>
+      </footer>
+      <!-- End Footer -->
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+</body>
+</html>

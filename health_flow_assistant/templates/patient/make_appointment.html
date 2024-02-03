@@ -1,0 +1,18 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}Make Appointment{% endblock %}
+
+{% block content %}
+<section id="appointment" class="appointment section-bg">
+  <div class="container">
+
+    <div class="section-title">
+  <h2>Make Appointment</h2>
+</div>
+  <form id="appointment-form"  method="post" role="form" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    {{ appointment_form.as_p }}
+    <button type="submit">Submit</button>
+  </form>
+{% endblock %}

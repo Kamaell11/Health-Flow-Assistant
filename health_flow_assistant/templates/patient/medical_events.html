@@ -1,0 +1,27 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}Medical Events{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <h2 class="mt-4 mb-4">Medical Events</h2>
+
+    {% if medical_events %}
+      <ul class="list-group">
+        {% for event in medical_events %}
+          <li class="list-group-item">
+            <div class="d-flex justify-content-between align-items-center">
+              <span>{{ event.get_event_type_display }}</span>
+              <span>{{ event.date|date:"F d, Y" }}</span>
+            </div>
+            <p class="mb-0">{{ event.description }}</p>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <div class="alert alert-info" role="alert">
+        No medical events available.
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

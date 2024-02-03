@@ -1,0 +1,17 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}Medical History{% endblock %}
+
+{% block content %}
+  <h2>Medical History</h2>
+
+  {% if medical_history %}
+    <ul>
+      {% for event in medical_history %}
+        <li>{{ event.get_event_type_display }} - {{ event.date }}: {{ event.description }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No medical history available.</p>
+  {% endif %}
+{% endblock %}

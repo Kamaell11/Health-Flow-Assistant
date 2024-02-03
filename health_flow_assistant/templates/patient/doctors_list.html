@@ -1,0 +1,68 @@
+{% extends 'base_dashboard.html' %}
+{% load static %}
+{% block content %}
+  <section id="doctors" class="doctors">
+    <div class="container">
+      <div class="section-title">
+        <form method="get">
+          <input type="text" name="q" value="{{ query|default:'' }}" placeholder="Search doctors...">
+    
+          
+          <label for="specialization">Specialization:</label>
+          <select name="specialization" id="specialization">
+            <option value="" {% if not specialization_filter %}selected{% endif %}>All Specializations</option>
+            {% for specialization in specializations %}
+              <option value="{{ specialization.name }}" {% if specialization.name == specialization_filter %}selected{% endif %}> {{ specialization.name }}</option>
+            {% endfor %}
+          </select>
+          
+          <label for="department">Department:</label>
+          <select name="department" id="department">
+            <option value="" {% if not department_filter %}selected{% endif %}>All Departments</option>
+            {% for department in departments %}
+              <option value="{{ department.name }}" {% if department.name == department_filter %}selected{% endif %}> {{ department.name }}</option>
+            {% endfor %}
+          </select>
+      
+          <button type="submit"class="btn btn-secondary">Search</button>
+          <a href="{% url 'patient:doctors_list' %}" class="btn btn-secondary">Clear</a>
+        </form>
+      </div>
+      <div class="row">
+        {% for doctor in doctors_list %}
+          <div class="col-lg-6 mt-4">
+            <div class="member d-flex align-items-start">
+              <div class="pic">
+                {% if doctor.profile_picture %}
+                  <div class="rounded-circle overflow-hidden" style="width: 180px; height: 180px;">
+                    <img src="{{ doctor.profile_picture.url }}" class="img-fluid" alt="{{ doctor.user.username }}" style="width: 100%; height: 100%; object-fit: cover;">
+                  </div>
+                {% else %}
+                  <div class="rounded-circle overflow-hidden" style="width: 180px; height: 180px;">
+                    <img src="{% static 'img/blank-profile-picture.png' %}" class="img-fluid" alt="Blank Profile Picture" style="width: 100%; height: 100%; object-fit: cover;">
+                  </div>
+                {% endif %}
+              </div>
+              
+              <div class="member-info">
+                <h4>{{ doctor.user.username }}</h4>
+                <span>Specialization: {{ doctor.specialization.name }}</span>
+                <p>Department: {{ doctor.department.name }}</p>
+                <p>{{ doctor.contact_number }}</p>
+                <div class="social">
+                  <a href="#"><i class="ri-twitter-fill"></i></a>
+                  <a href="#"><i class="ri-facebook-fill"></i></a>
+                  <a href="#"><i class="ri-instagram-fill"></i></a>
+                  <a href="#"><i class="ri-linkedin-box-fill"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endblock %}
+
+
+

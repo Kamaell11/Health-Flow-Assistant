@@ -1,0 +1,33 @@
+{% extends 'base_dashboard.html' %}
+{% load static %}
+
+{% block content %}
+  <section id="prescriptions" class="doctors">
+    <div class="container">
+      <div class="section-title">
+        <h2>Prescriptions</h2>
+      </div>
+      <div class="row">
+        {% for prescription in prescription_list %}
+          <div class="col-lg-6 mt-4">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">{{ prescription.patient }}</h5>
+                <p class="card-text">Issue Date: {{ prescription.issue_date }}</p>
+                <p class="card-text">Meds: 
+                    {% for medication in prescription.medications.all %}
+                      {{ medication.name }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                  </p>
+                  
+                <p class="card-text">Dose: {{ prescription.dose }}</p>
+                <p class="card-text">Doctor: {{ prescription.doctor }}</p>
+                <a href="{% url 'doctor:prescription_detail' prescription.id %}" class="btn btn-primary">View Details</a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endblock %}

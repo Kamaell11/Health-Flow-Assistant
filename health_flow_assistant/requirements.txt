@@ -1,0 +1,4 @@
+Django==5.0.1
+Django==3.2.12
+django_countries==7.5.1
+django_phonenumber_field==7.3.0

@@ -1,0 +1,25 @@
+{% extends 'base_dashboard.html' %}
+{% load static %}
+
+{% block content %}
+  <section id="prescription-detail" class="doctors">
+    <div class="container">
+      <div class="section-title">
+        <h2>Prescription Detail</h2>
+      </div>
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">{{ prescription.patient }}</h5>
+              <p class="card-text">Issue Date: {{ prescription.issue_date }}</p>
+              <p class="card-text">Dose: {{ prescription.dose }}</p>
+              <p class="card-text">Description: {{ prescription.description }}</p>
+              <a href="{% url 'doctor:prescription_list' %}" class="btn btn-primary">Back to Prescriptions</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

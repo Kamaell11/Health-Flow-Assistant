@@ -1,0 +1,16 @@
+{% extends 'base_dashboard.html' %}
+
+{% block content %}
+    {% if user.is_authenticated and user.is_doctor %}
+        <h2>Welcome, Dr. {{ user.username }}!</h2>
+        {% if user.doctor %}
+            <p>Specialization: {{ user.doctor.specialization }}</p>
+
+        {% else %}
+            <p>No doctor profile found for {{ user.username }}.</p>
+        {% endif %}
+    {% else %}
+
+        <h2>Login to access your doctor dashboard</h2>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}Reschedule Appointment{% endblock %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h2>Reschedule Appointment</h2>
+
+    <form method="post" action="{% url 'doctor:reschedule_appointment_doctor' appointment_id %}">
+      {% csrf_token %}
+      {{ form.as_p }}
+
+      <button type="submit" class="btn btn-warning">Reschedule Appointment</button>
+      <a href="{% url 'doctor:appointments' %}" class="btn btn-secondary ml-2">Cancel</a>
+    </form>
+  </div>
+{% endblock %}

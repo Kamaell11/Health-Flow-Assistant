@@ -1,0 +1,54 @@
+{% extends 'base_dashboard.html' %}
+{% load static %}
+
+{% block content %}
+<section id="patients" class="doctors">
+  <div class="container">
+    <div class="section-title">
+      <form method="get" class="mb-4">
+        <div class="input-group">
+          <input type="text" name="q" class="form-control" value="{{ query|default:'' }}" placeholder="Search patients...">
+          <div class="input-group-append">
+            <button type="submit" class="btn btn-secondary">Search</button>
+            <a href="{% url 'doctor:patients_list' %}" class="btn btn-secondary">Clear</a>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="row">
+      {% for patient in patient_list %}
+      <div class="col-lg-6 mt-4">
+        <div class="card">
+          <div class="row no-gutters">
+            <div class="col-md-4">
+              <div class="card-img">
+                {% if patient.profile_picture %}
+                <img src="{{ patient.profile_picture.url }}" class="img-fluid rounded" alt="{{ patient.user.username }}">
+                {% else %}
+                <img src="{% static 'img/blank-profile-picture.png' %}" class="img-fluid rounded" alt="Blank Profile Picture">
+                {% endif %}
+              </div>
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h4 class="card-title">{{ patient.user.username }}</h4>
+                <p class="card-text">Gender: {{ patient.gender }}</p>
+                <p class="card-text">Age: 24</p>
+                <p class="card-text">Address: {{ patient.address }}</p>
+                <p class="card-text">Contact number: {{ patient.contact_number }}</p>
+                <div class="buttons mt-3">
+                  <a href="{% url 'doctor:medical_history_list' %}" class="btn btn-primary mr-2">Medical History</a>
+                  <a href="{% url 'doctor:add_medical_event' patient.id %}" class="btn btn-success mr-2">Add Medical Event</a>
+                  <a href="{% url 'doctor:prescription_list' %}" class="btn btn-info mr-2">Prescriptions</a>
+                  <a href="{% url 'doctor:add_prescription' patient.id %}" class="btn btn-warning">Add Prescription</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

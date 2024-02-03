@@ -1,0 +1,17 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}Cancel Appointment{% endblock %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h2>Cancel Appointment</h2>
+
+    <p>Are you sure you want to cancel this appointment?</p>
+
+    <form method="post" action="{% url 'doctor:cancel_appointment_doctor' appointment_id %}">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">Yes, Cancel Appointment</button>
+      <a href="{% url 'doctor:appointments' %}" class="btn btn-secondary ml-2">No, Go Back</a>
+    </form>
+  </div>
+{% endblock %}

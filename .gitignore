@@ -1,0 +1,11 @@
+health_flow_assistant/health_flow_assistant/__pycache__
+health_flow_assistant/db.sqlite3
+health_flow_assistant/doctor/__pycache__
+health_flow_assistant/clinic/__pycache__
+health_flow_assistant/assistant/__pycache__
+health_flow_assistant/patient/__pycache__
+health_flow_assistant/patient/migrations
+health_flow_assistant/assistant/migrations
+health_flow_assistant/clinic/migrations
+health_flow_assistant/doctor/migrations
+health_flow_assistant/media/doctor_profile_pics

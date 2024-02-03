@@ -1,0 +1,484 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Health Flow Assistant{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap-icons/bootstrap-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'boxicons/css/boxicons.min.css' %}">
+    <link rel="stylesheet" href="{% static 'glightbox/css/glightbox.min.css' %}">
+    <link rel="stylesheet" href="{% static 'remixicon/remixicon.css' %}">
+    <link rel="stylesheet" href="{% static 'fontawesome-free/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <style>
+      body {
+          padding-top: 56px; 
+          margin-bottom: 80px; 
+      }
+
+      main {
+          padding: 60px 0; 
+      }
+
+      footer {
+          position: fixed;
+          bottom: 0;
+          width: 100%;
+          background-color: #f8f9fa;
+          padding: 20px 0;
+      }
+  </style>
+</head>
+<body>
+    <!-- ======= Top Bar ======= -->
+    <div id="topbar" class="d-flex align-items-center fixed-top">
+        <div class="container d-flex justify-content-between">
+          <div class="contact-info d-flex align-items-center">
+            <i class="bi bi-envelope"></i> <a href="mailto:contact@example.com">kamilskylark@gmail.com</a>
+            <i class="bi bi-phone"></i> +48 601 491 504
+          </div>
+          <div class="d-none d-lg-flex social-links align-items-center">
+            <a href="https://www.facebook.com/kamil.skowronek2" class="facebook"><i class="bi bi-facebook"></i></a>
+            <a href="https://www.linkedin.com/in/kamil-skowronek-910204185/" class="linkedin"><i class="bi bi-linkedin"></i></a>
+            <a href="https://github.com/Kamaell11" class="github"><i class="bi bi-github"></i></a>
+          </div>
+        </div>
+      </div>
+
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top">
+        <div class="container d-flex align-items-center">
+    
+            <h1 class="logo me-auto"><a href="{% url 'clinic:home' %}">Health Flow Assistant</a></h1>    
+            <nav id="navbar" class="navbar order-last order-lg-0">
+                <ul>
+
+                    <li><a class="nav-link scrollto" href="#departments">Departments</a></li>
+                    <li><a class="nav-link scrollto" href="#doctors">Doctors</a></li>
+                    {% if user.is_authenticated %}
+                      {% if user.is_doctor %}
+                          <li><a class="nav-link scrollto" href="{% url 'doctor:doctor_dashboard' %}">Dashboard</a></li>
+                      {% elif user.is_patient %}
+                          <li><a class="nav-link scrollto" href="{% url 'patient:patient_dashboard' %}">Dashboard</a></li>
+                      {% endif %}
+                      <li><a class="nav-link scrollto" href="{% url 'clinic:logout' %}">Logout</a></li>
+                    {% else %}
+                        <li class="dropdown"><a href="#"><span>Login</span> <i class="bi bi-chevron-down"></i></a>
+                            <ul>
+                                <li><a href="{% url 'patient:patient_login' %}">Patient</a></li>
+                                <li><a href="{% url 'doctor:doctor_login' %}">Doctor</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown"><a href="#"><span>Register</span> <i class="bi bi-chevron-down"></i></a>
+                            <ul>
+                                <li><a href="{% url 'patient:patient_register' %}">Patient</a></li>
+                                <li><a href="{% url 'doctor:doctor_register' %}">Doctor</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                    <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+                </ul>
+                <i class="bi bi-list mobile-nav-toggle"></i>
+            </nav><!-- .navbar -->
+    
+            <a href="#appointment" class="appointment-btn scrollto"><span class="d-none d-md-inline">Make an</span> Appointment</a>
+    
+        </div>
+    </header>
+    
+    <main id="main">
+
+        <!-- ======= Counts Section ======= -->
+        <section id="counts" class="counts">
+          <div class="container">
+    
+            <div class="row">
+    
+              <div class="col-lg-3 col-md-6">
+                <div class="count-box">
+                    <i class="fas fa-user-md"></i>
+                    <span data-purecounter-start="0" data-purecounter-end="{{ doctors_count }}" data-purecounter-duration="1" class="purecounter">{{ doctors_count }}</span>
+                    <p>Doctors</p>
+                </div>
+            </div>
+            
+              <div class="col-lg-3 col-md-6 mt-5 mt-md-0">
+                <div class="count-box">
+                  <i class="fa-solid fa-hospital-user"></i>
+                  <span data-purecounter-start="0" data-purecounter-end="{{ patients_count }}" data-purecounter-duration="1" class="purecounter">{{ patients_count }}</span>
+                  <p>Patients</p>
+                </div>
+              </div>
+    
+              <div class="col-lg-3 col-md-6 mt-5 mt-lg-0">
+                <div class="count-box">
+                  <i class="fas fa-flask"></i>
+                  <span data-purecounter-start="0" data-purecounter-end="{{ specializations_count }}" data-purecounter-duration="1" class="purecounter">{{ specializations_count }}</span>
+                  <p>Specializations</p>
+                </div>
+              </div>
+              
+    
+              <div class="col-lg-3 col-md-6 mt-5 mt-lg-0">
+                <div class="count-box">
+                  <i class="fa-regular fa-calendar-check"></i>
+                  <span data-purecounter-start="0" data-purecounter-end="{{ appointments_count }}" data-purecounter-duration="1" class="purecounter">{{ appointments_count }}</span>
+                  <p>Appoitments</p>
+                </div>
+              </div>
+    
+            </div>
+    
+          </div>
+        </section><!-- End Counts Section -->
+    
+        
+    
+        <!-- ======= Appointment Section ======= -->
+<section id="appointment" class="appointment section-bg">
+  <div class="container">
+
+    <div class="section-title">
+      <h2>Make an Appointment</h2>
+      <p>Need to see a doctor? We've got you covered!</p>
+    </div>
+
+    <form id="appointment-form" method="post" role="form" class="php-email-form">
+      {% csrf_token %}
+      <div class="row">
+        <div class="col-md-4 form-group">
+          <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
+          <div class="validate"></div>
+        </div>
+        <div class="col-md-4 form-group mt-3 mt-md-0">
+          <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
+          <div class="validate"></div>
+        </div>
+        <div class="col-md-4 form-group mt-3 mt-md-0">
+          <input type="tel" class="form-control" name="phone" id="phone" placeholder="Your Phone" required>
+          <div class="validate"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 form-group mt-3">
+          <input type="datetime-local" name="date" class="form-control" id="date" placeholder="Appointment Date and Time" required>
+          <div class="validate"></div>
+        </div>
+        <div class="col-md-4 form-group mt-3">
+          <select name="department" id="department" class="form-select" required>
+            <option value="">Select Department</option>
+            {% for department in departments_list %}
+              <option value="{{ department.id }}">{{ department.name }}</option>
+            {% endfor %}
+          </select>
+          <div class="validate"></div>
+        </div>
+        <div class="col-md-4 form-group mt-3">
+          <select name="doctor" id="doctor" class="form-select" required>
+            <option value="">Select Doctor</option>
+            {% for doctor in doctors_list %}
+              <option value="{{ doctor.id }}">{{ doctor.user.get_full_name }}</option>
+            {% endfor %}
+          </select>
+          <div class="validate"></div>
+        </div>
+      </div>
+
+      <div class="form-group mt-3">
+        <textarea class="form-control" name="message" rows="5" placeholder="Message (Optional)"></textarea>
+        <div class="validate"></div>
+      </div>
+      <div class="mb-3">
+        <div class="loading">Loading</div>
+        <div class="error-message"></div>
+        <div class="sent-message">Your appointment request has been sent successfully. Thank you!</div>
+      </div>
+      <div class="text-center"><button type="button" onclick="submitAppointment()">Make an Appointment</button></div>
+    </form>
+
+  </div>
+</section>
+
+<!-- Your other sections -->
+
+<script>
+  function submitAppointment() {
+    var form = document.getElementById('appointment-form');
+    var formData = new FormData(form);
+
+    fetch('{% url "patient:make_appointment" %}', {
+      method: 'POST',
+      body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById('appointment-result').innerHTML = data.message;
+    })
+    .catch(error => console.error('Error:', error));
+  }
+</script>
+
+    
+        <!-- ======= Departments Section ======= -->
+<section id="departments" class="departments">
+  <div class="container">
+
+      <div class="section-title">
+          <h2>Departments</h2>
+          <p>Explore our specialized departments!</p>
+      </div>
+
+      <div class="row gy-4">
+          <div class="col-lg-3">
+              <ul class="nav nav-tabs flex-column" role="tablist">
+                  {% for department in departments_list %}
+                      <li class="nav-item" role="presentation">
+                          <a class="nav-link {% if forloop.first %}active show{% endif %}" data-bs-toggle="tab" href="#tab-{{ department.id }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" role="tab">{{ department.name }}</a>
+                      </li>
+                  {% endfor %}
+              </ul>
+          </div>
+          <div class="col-lg-9">
+              <div class="tab-content">
+                  {% for department in departments_list %}
+                      <div class="tab-pane {% if forloop.first %}active show{% endif %}" id="tab-{{ department.id }}" role="tabpanel">
+                          <div class="row gy-4">
+                              <div class="col-lg-8 details order-2 order-lg-1">
+                                  <h3>{{ department.name }}</h3>
+                                  <p class="fst-italic">{{ department.description }}<p>
+                              </div>
+                              <div class="col-lg-4 text-center order-1 order-lg-2">
+                                  <!-- Add department image or other content here -->
+                              </div>
+                          </div>
+                      </div>
+                  {% endfor %}
+              </div>
+          </div>
+      </div>
+
+  </div>
+</section><!-- End Departments Section -->
+
+    
+<!-- ======= Doctors Section ======= -->
+<section id="doctors" class="doctors">
+  <div class="container">
+      <div class="section-title">
+          <h2>Doctors</h2>
+          <p>Meet our team of dedicated and skilled medical professionals. Their expertise and commitment ensure the highest quality of care for our patients. We strive to provide personalized and compassionate healthcare services to meet your needs. Explore our diverse team and learn more about the specialties and experience they bring to our clinic.</p>
+      </div>
+      <div class="row">
+          <!-- Ensure doctors_list is correctly passed to the template -->
+{% for doctor in doctors_list %}
+<div class="col-lg-6 mt-4">
+  <div class="member d-flex align-items-start">
+      <div class="pic">
+          {% if doctor.profile_picture %}
+              <div class="rounded-circle overflow-hidden" style="width: 180px; height: 180px;">
+                  <img src="{{ doctor.profile_picture.url }}" class="img-fluid" alt="{{ doctor.user.username }}" style="width: 100%; height: 100%; object-fit: cover;">
+              </div>
+          {% else %}
+              <div class="rounded-circle overflow-hidden" style="width: 180px; height: 180px;">
+                  <img src="{% static 'img/blank-profile-picture.png' %}" class="img-fluid" alt="Blank Profile Picture" style="width: 100%; height: 100%; object-fit: cover;">
+              </div>
+          {% endif %}
+      </div>
+      
+      <div class="member-info">
+          <h4>{{ doctor.user.username }}</h4>
+          <span>Specialization: {{ doctor.specialization.name }}</span>
+          <p>Department: {{ doctor.department.name }}</p>
+          <p>{{ doctor.contact_number }}</p>
+          <div class="social">
+              
+            <a href=""><i class="ri-twitter-fill"></i></a>
+            <a href=""><i class="ri-facebook-fill"></i></a>
+            <a href=""><i class="ri-instagram-fill"></i></a>
+            <a href=""> <i class="ri-linkedin-box-fill"></i> </a>
+          
+          </div>
+      </div>
+  </div>
+</div>
+
+{% endfor %}
+
+      </div>
+  </div>
+</section>
+
+
+
+        <!-- ======= Frequently Asked Questions Section ======= -->
+<section id="faq" class="faq section-bg">
+  <div class="container">
+
+    <div class="section-title">
+      <h2>Frequently Asked Questions</h2>
+      <p>Here are some frequently asked questions about our service.</p>
+    </div>
+
+    <div class="faq-list">
+      <ul>
+        <li data-aos="fade-up">
+          <i class="bx bx-help-circle icon-help"></i>
+          <a data-bs-toggle="collapse" class="collapse" data-bs-target="#faq-list-1">How can I schedule an appointment with a doctor? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+          <div id="faq-list-1" class="collapse show" data-bs-parent=".faq-list">
+            <p>
+              To schedule an appointment with a doctor, log in to your patient account and use the "Schedule Appointment" option. Choose your preferred doctor, date, and appointment time.
+            </p>
+          </div>
+        </li>
+
+        <li data-aos="fade-up" data-aos-delay="100">
+          <i class="bx bx-help-circle icon-help"></i>
+          <a data-bs-toggle="collapse" data-bs-target="#faq-list-2" class="collapsed">Is it possible to cancel an appointment? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+          <div id="faq-list-2" class="collapse" data-bs-parent=".faq-list">
+            <p>
+              Yes, you can cancel an appointment by logging into your patient account and navigating to the "My Appointments" section. Select the appointment you wish to cancel and follow the prompts.
+            </p>
+          </div>
+        </li>
+
+        <li data-aos="fade-up" data-aos-delay="200">
+          <i class="bx bx-help-circle icon-help"></i>
+          <a data-bs-toggle="collapse" data-bs-target="#faq-list-3" class="collapsed">How do I contact customer support? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+          <div id="faq-list-3" class="collapse" data-bs-parent=".faq-list">
+            <p>
+              You can contact our customer support team by visiting the "Contact Us" page on our website. Fill out the contact form, and our team will get back to you as soon as possible.
+            </p>
+          </div>
+        </li>
+
+        <li data-aos="fade-up" data-aos-delay="300">
+          <i class="bx bx-help-circle icon-help"></i>
+          <a data-bs-toggle="collapse" data-bs-target="#faq-list-4" class="collapsed">What should I do if I forget my password? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+          <div id="faq-list-4" class="collapse" data-bs-parent=".faq-list">
+            <p>
+              If you forget your password, click on the "Forgot Password" link on the login page. Follow the instructions to reset your password and regain access to your account.
+            </p>
+          </div>
+        </li>
+
+        <li data-aos="fade-up" data-aos-delay="400">
+          <i class="bx bx-help-circle icon-help"></i>
+          <a data-bs-toggle="collapse" data-bs-target="#faq-list-5" class="collapsed">Are my medical records secure and private? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+          <div id="faq-list-5" class="collapse" data-bs-parent=".faq-list">
+            <p>
+              Yes, we take the security and privacy of your medical records seriously. Our platform uses advanced encryption and security measures to ensure the confidentiality of your health information.
+            </p>
+          </div>
+        </li>
+
+      </ul>
+    </div>
+
+  </div>
+</section><!-- End Frequently Asked Questions Section -->
+
+    
+    
+        
+<!-- ======= Contact Section ======= -->
+<section id="contact" class="contact">
+  <div class="container">
+
+    <div class="section-title">
+        <h2>Contact</h2>
+        <p>Contact Me</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row mt-5">
+
+      <div class="col-lg-4">
+        <div class="info">
+          <div class="address">
+            <i class="bi bi-geo-alt"></i>
+            <h4>Location:</h4>
+            <p>Lublin, Poland</p>
+          </div>
+
+          <div class="email">
+            <i class="bi bi-envelope"></i>
+            <h4>Email:</h4>
+            <p>kamilskylark@gmail.com</p>
+          </div>
+
+          <div class="phone">
+            <i class="bi bi-phone"></i>
+            <h4>Call:</h4>
+            <p>+48 601 491 504</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-8 mt-5 mt-lg-0">
+        <form action="{% url 'clinic:contact' %}" method="post" role="form" class="php-email-form">
+          {% csrf_token %}
+          <div class="row">
+            <div class="col-md-6 form-group">
+              <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required="">
+            </div>
+            <div class="col-md-6 form-group mt-3 mt-md-0">
+              <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required="">
+            </div>
+          </div>
+          <div class="form-group mt-3">
+            <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required="">
+          </div>
+          <div class="form-group mt-3">
+            <textarea class="form-control" name="message" rows="5" placeholder="Message" required=""></textarea>
+          </div>
+          <div class="my-3">
+            <div class="loading">Loading</div>
+            <div class="error-message"></div>
+            <div class="sent-message">Your message has been sent. Thank you!</div>
+          </div>
+          <div class="text-center"><button type="submit">Send Message</button></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section><!-- End Contact Section -->
+
+    
+      </main>
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer">
+
+        
+    
+        <div class="container d-md-flex py-4">
+    
+          <div class="me-md-auto text-center text-md-start">
+            <div class="copyright">
+              © Copyright <strong><span>Health Flow Assistant</span></strong>. Fell free to use
+            </div>
+            <div class="credits">
+              <!-- All the links in the footer should remain intact. -->
+              <!-- You can delete the links only if you purchased the pro version. -->
+              <!-- Licensing information: https://bootstrapmade.com/license/ -->
+              <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/medilab-free-medical-bootstrap-theme/ -->
+              Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+            </div>
+          </div>
+          <div class="social-links text-center text-md-right pt-3 pt-md-0">
+
+            <a href="https://www.facebook.com/kamil.skowronek2" class="facebook"><i class="bx bxl-facebook"></i></a>
+            <a href="https://www.linkedin.com/in/kamil-skowronek-910204185/" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+            <a href="https://github.com/Kamaell11" class="github"><i class="bx bxl-github"></i></a>
+          </div>
+        </div>
+      </footer>
+      <!-- End Footer -->
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+</body>
+</html>

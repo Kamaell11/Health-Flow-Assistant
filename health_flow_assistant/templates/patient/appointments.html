@@ -1,0 +1,35 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}Appointments{% endblock %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h2>Appointments</h2>
+
+    {% if appointments %}
+      <ul class="list-group">
+        {% for appointment in appointments %}
+          <li class="list-group-item">
+            <strong>{{ appointment.doctor }}</strong> - {{ appointment.appointment_date }}: {{ appointment.description }}
+            <br> 
+            <form method="post" action="{% url 'patient:cancel_appointment' appointment.id %}" class="d-inline">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger btn-sm ml-2">Cancel</button>
+            </form>
+
+            
+
+            <form method="post" action="{% url 'patient:reschedule_appointment' appointment.id %}" class="d-inline">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-warning btn-sm ml-2">Reschedule</button>
+            </form>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <div class="alert alert-info" role="alert">
+        No appointments available.
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}
